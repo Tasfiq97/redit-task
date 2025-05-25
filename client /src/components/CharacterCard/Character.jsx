@@ -31,7 +31,7 @@ const Character = ({ char }) => {
   // loading
   if (isLoading) return <CardLoading />;
   if (error) return <p className="text-red-500">Error fetching characters.</p>;
-
+  console.log(homeWorldResult?.properties?.name);
   return (
     <div
       key={char.uid}
@@ -47,15 +47,37 @@ const Character = ({ char }) => {
         <p>
           <span className="text-yellow-400">Gender:</span> {result?.properties.gender}
         </p>
-        <p>
-          <span className="text-yellow-400">Homeworld:</span> {homeWorldResult?.properties?.name}
-        </p>
-        <p>
-          <span className="text-yellow-400">Species:</span> {speciesDataResult?.properties.classification}
-        </p>
-        <p>
-          <span className="text-yellow-400">Race:</span> {speciesDataResult?.properties.name}
-        </p>
+        {homeworldLoading ? (
+          <>
+            {' '}
+            <div className="col-span-1 h-2 rounded bg-gray-200 opacity-[0.4]"></div>
+          </>
+        ) : (
+          <p>
+            <span className="text-yellow-400">Homeworld:</span> {homeWorldResult?.properties?.name}
+          </p>
+        )}
+        {homeworldLoading ? (
+          <>
+            {' '}
+            <div className="col-span-1 h-2 rounded bg-gray-200 opacity-[0.4]"></div>
+          </>
+        ) : (
+          <p>
+            <span className="text-yellow-400">Species:</span>{' '}
+            {speciesDataResult?.properties.classification || 'unknown'}
+          </p>
+        )}
+        {speciesLoading ? (
+          <>
+            {' '}
+            <div className="col-span-2 h-2 rounded bg-gray-200"></div>
+          </>
+        ) : (
+          <p>
+            <span className="text-yellow-400">Race:</span> {speciesDataResult?.properties.name || 'unknown'}
+          </p>
+        )}
       </div>
 
       {filmsWithCharacter?.length > 0 && (

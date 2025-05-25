@@ -4,3 +4,9 @@
 .font-orbitron {
     font-family: 'Orbitron', sans-serif;
   }
+
+  body{
+
+    scrollbar-width: thin;
+  scrollbar-color: #fbbf24 #1a1a1a; 
+  }

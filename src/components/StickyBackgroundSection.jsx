@@ -5,7 +5,7 @@ import CharacterSection from './HomeComponents/CharacterSection';
 
 const StickyBackgroundSection = () => {
   return (
-    <div>
+    <div className="h-screen overflow-y-scroll snap-y snap-mandatory">
       <BannerSection />
       <InformationSection />
       <CharacterSection />

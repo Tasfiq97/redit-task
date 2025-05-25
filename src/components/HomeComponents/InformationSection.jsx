@@ -5,7 +5,7 @@ const InformationSection = () => {
   return (
     <div
       style={{ backgroundImage: `url(${starWarsImage})` }}
-      className="sticky top-0 h-screen bg-cover bg-center z-0 font-orbitron"
+      className="sticky top-0 h-screen  bg-cover bg-center z-0 font-orbitron"
     >
       <div className="h-full w-full flex items-center justify-center">
         <div className="absolute inset-0 bg-black/40  z-0"></div>

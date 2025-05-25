@@ -5,7 +5,7 @@ export const starWarsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://www.swapi.tech/api/' }),
   endpoints: (builder) => ({
     getCharacters: builder.query({
-      query: () => 'people',
+      query: (page) => `people/?page=${page}&limit=10`,
     }),
     getCharacterById: builder.query({
       query: (id) => `people/${id}`,

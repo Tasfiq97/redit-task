@@ -5,13 +5,11 @@ import {
   useGetPlanetsByIdQuery,
   useGetSpeciesByIdQuery,
 } from '../../features/starWarsApi';
-import Loading from '../Loading';
 import CardLoading from '../CardLoading';
 import { getIdFromUrl } from '../../utils/utils';
 
 const Character = ({ char }) => {
   const { data, error, isLoading } = useGetCharacterByIdQuery(char.uid);
-  console.log('🚀 ~ Character ~ data:', data);
   const { result } = data || {};
 
   //homeworld
@@ -60,7 +58,6 @@ const Character = ({ char }) => {
         </p>
       </div>
 
-      {/* Films Section */}
       {filmsWithCharacter?.length > 0 && (
         <div className="mt-4">
           <p className="text-yellow-400 font-medium">Appeared In:</p>

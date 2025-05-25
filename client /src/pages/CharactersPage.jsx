@@ -3,42 +3,22 @@ import starWarsBg from '/assets/char.jpg';
 import Character from '../components/CharacterCard/Character';
 import { useGetCharactersQuery } from '../features/starWarsApi';
 import Loading from '../components/Loading';
+import Pagination from '../components/Pagination';
 const CharactersPage = () => {
-  const characters = [
-    { id: '1', name: 'Luke Skywalker', image: '/assets/luke.jpg' },
-    { id: '2', name: 'Leia Organa', image: '/assets/leia.jpg' },
-    { id: '3', name: 'Darth Vader', image: '/assets/vader.jpg' },
-    { id: '4', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '5', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '6', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '7', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '8', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '9', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '10', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '11', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '12', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '13', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '14', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '15', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '16', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '17', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '18', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '19', name: 'Yoda', image: '/assets/yoda.jpg' },
-    { id: '20', name: 'Yoda', image: '/assets/yoda.jpg' },
-  ];
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
-  const { data, error, isLoading } = useGetCharactersQuery();
+  const { data, error, isLoading } = useGetCharactersQuery(currentPage);
   console.log('🚀 ~ CharactersPage ~ data:', data);
 
   if (isLoading) return <Loading />;
   if (error) return <p className="text-red-500">Error fetching characters.</p>;
+  const totalPages = data?.total_pages || 1;
 
-  const filteredCharacters = characters.filter((char) => char.name.toLowerCase().includes(searchTerm));
   return (
     <div
       style={{ backgroundImage: `url(${starWarsBg})` }}
@@ -56,13 +36,13 @@ const CharactersPage = () => {
           />
         </div>
 
-        {/* Scrollable Cards */}
-        <div className="h-[80vh] md:h-[85vh] lg:h-[85vh]  w-full overflow-auto ">
+        <div className="h-[80vh] md:h-[85vh] lg:h-[90vh]  w-full overflow-auto ">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-full  mt-2 px-10">
             {data?.results.map((dt) => (
               <Character key={dt.uid} char={dt} />
             ))}
           </div>
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         </div>
       </div>
     </div>

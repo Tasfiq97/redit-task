@@ -1,17 +1,76 @@
 import React from 'react';
+import {
+  useGetAllFilmsQuery,
+  useGetCharacterByIdQuery,
+  useGetPlanetsByIdQuery,
+  useGetSpeciesByIdQuery,
+} from '../../features/starWarsApi';
+import Loading from '../Loading';
+import CardLoading from '../CardLoading';
+import { getIdFromUrl } from '../../utils/utils';
 
 const Character = ({ char }) => {
+  const { data, error, isLoading } = useGetCharacterByIdQuery(char.uid);
+  console.log('🚀 ~ Character ~ data:', data);
+  const { result } = data || {};
+
+  //homeworld
+  const homeworldId = getIdFromUrl(result?.properties?.homeworld);
+  const { data: homeworldData, isLoading: homeworldLoading } = useGetPlanetsByIdQuery(homeworldId);
+  const { result: homeWorldResult } = homeworldData || {};
+
+  //species
+  const { data: speciesData, error: speciesError, isLoading: speciesLoading } = useGetSpeciesByIdQuery(char.uid);
+  const { result: speciesDataResult } = speciesData || {};
+
+  //films
+  const { data: filmsData } = useGetAllFilmsQuery();
+
+  const filmsWithCharacter = filmsData?.result?.filter((film) =>
+    film?.properties?.characters?.includes(result?.properties?.url)
+  );
+
+  // loading
+  if (isLoading) return <CardLoading />;
+  if (error) return <p className="text-red-500">Error fetching characters.</p>;
+
   return (
     <div
-      key={char.id}
-      className="bg-white/10 border border-white/20 rounded-xl p-4 text-center text-white hover:scale-105 transition-transform duration-300 shadow-lg backdrop-blur-md h-full"
+      key={char.uid}
+      className="bg-white/10 border border-white/20 rounded-xl p-6 text-center text-white hover:scale-105 transition-transform duration-300 shadow-lg backdrop-blur-md min-h-[400px] flex flex-col justify-between"
     >
-      <img
-        src={char.image}
-        alt={char.name}
-        className="w-full h-16 sm:h-40 md:h-44 lg:h-48 object-cover rounded-lg mb-4"
-      />
-      <h3 className="text-base sm:text-lg font-semibold font-orbitron">{char.name}</h3>
+      {/* Character Name Title */}
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4">{result?.properties.name}</h2>
+
+      <div className="space-y-2 text-sm text-gray-300">
+        <p>
+          <span className="text-yellow-400">Height:</span> {result?.properties.height} cm
+        </p>
+        <p>
+          <span className="text-yellow-400">Gender:</span> {result?.properties.gender}
+        </p>
+        <p>
+          <span className="text-yellow-400">Homeworld:</span> {homeWorldResult?.properties?.name}
+        </p>
+        <p>
+          <span className="text-yellow-400">Species:</span> {speciesDataResult?.properties.classification}
+        </p>
+        <p>
+          <span className="text-yellow-400">Race:</span> {speciesDataResult?.properties.name}
+        </p>
+      </div>
+
+      {/* Films Section */}
+      {filmsWithCharacter?.length > 0 && (
+        <div className="mt-4">
+          <p className="text-yellow-400 font-medium">Appeared In:</p>
+          <ul className="list-disc list-inside text-sm text-gray-200 mt-1 space-y-1">
+            {filmsWithCharacter.map((film) => (
+              <li key={film.uid}>{film.properties.title}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };

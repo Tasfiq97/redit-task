@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import starWarsBg from '/assets/char.jpg';
 import Character from '../components/CharacterCard/Character';
+import { useGetCharactersQuery } from '../features/starWarsApi';
+import Loading from '../components/Loading';
 const CharactersPage = () => {
   const characters = [
     { id: '1', name: 'Luke Skywalker', image: '/assets/luke.jpg' },
@@ -30,13 +32,19 @@ const CharactersPage = () => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
+  const { data, error, isLoading } = useGetCharactersQuery();
+  console.log('🚀 ~ CharactersPage ~ data:', data);
+
+  if (isLoading) return <Loading />;
+  if (error) return <p className="text-red-500">Error fetching characters.</p>;
+
   const filteredCharacters = characters.filter((char) => char.name.toLowerCase().includes(searchTerm));
   return (
     <div
       style={{ backgroundImage: `url(${starWarsBg})` }}
       className="sticky top-0 h-screen bg-cover bg-center z-0 font-orbitron"
     >
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-0"></div>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-0"></div>
 
       <div className="relative z-10 h-full w-full flex flex-col items-center justify-center px-4 py-6">
         <div className="w-full max-w-3xl mb-4">
@@ -49,10 +57,10 @@ const CharactersPage = () => {
         </div>
 
         {/* Scrollable Cards */}
-        <div className="h-[80vh] md:h-[85vh] lg:h-[85vh]  w-full overflow-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
-            {filteredCharacters.map((char) => (
-              <Character key={char.id} char={char} />
+        <div className="h-[80vh] md:h-[85vh] lg:h-[85vh]  w-full overflow-auto ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-full  mt-2 px-10">
+            {data?.results.map((dt) => (
+              <Character key={dt.uid} char={dt} />
             ))}
           </div>
         </div>

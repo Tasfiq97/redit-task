@@ -1,12 +1,26 @@
-# React + Vite
+# ⭐ Star Wars Character Explorer — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of the **Star Wars Character Explorer** application, built using **React**, **Vite**, **Tailwind CSS**, and **Framer Motion**. It provides an interactive interface to explore Star Wars characters and view their associated details such as homeworld, species, and films — fetched from [SWAPI.tech](https://swapi.tech/) via a backend middleware.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Features
 
-## Expanding the ESLint configuration
+- 🔍 Search characters by name
+- 🧑 View character details: name, species, homeworld, and movies
+- 💫 Smooth transitions and animations using Framer Motion
+- 🎨 Tailwind CSS for modern, responsive UI
+- 🌐 Communicates with backend middleware for API handling
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Tech Stack
+
+- **React** — UI framework
+- **Vite** — Fast dev server and bundler
+- **Redux Toolkit** — Global state management
+- **Tailwind CSS** — Utility-first styling
+- **Framer Motion** — Animation and transitions
+- **React Router DOM** — Routing
+
+---

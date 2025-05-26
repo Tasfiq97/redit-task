@@ -9,7 +9,6 @@ router.get('/:id', async (req, res) => {
     const response = await axios.get(`${SWAPI_BASE_URL}/planets/${id}`);
     res.json(response.data);
   } catch (error) {
-    console.error('Error fetching planet by ID:', error.message);
     res.status(500).json({ error: 'Failed to fetch planet' });
   }
 });

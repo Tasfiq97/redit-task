@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Character from '../CharacterCard/Character';
 import { useGetCharactersQuery } from '../../features/starWarsApi';
 const CharacterSection = () => {
-  const { data, error, isLoading } = useGetCharactersQuery(1);
-  console.log('🚀 ~ CharacterSection ~ data:', data);
+  const { data } = useGetCharactersQuery(1);
+
   const navigate = useNavigate();
   return (
     <div

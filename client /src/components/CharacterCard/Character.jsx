@@ -18,7 +18,7 @@ const Character = ({ char }) => {
   const { result: homeWorldResult } = homeworldData || {};
 
   //species
-  const { data: speciesData, error: speciesError, isLoading: speciesLoading } = useGetSpeciesByIdQuery(char.uid);
+  const { data: speciesData, isLoading: speciesLoading } = useGetSpeciesByIdQuery(char.uid);
   const { result: speciesDataResult } = speciesData || {};
 
   //films

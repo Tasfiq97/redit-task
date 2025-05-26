@@ -31,7 +31,7 @@ const Character = ({ char }) => {
   // loading
   if (isLoading) return <CardLoading />;
   if (error) return <p className="text-red-500">Error fetching characters.</p>;
-  console.log(homeWorldResult?.properties?.name);
+
   return (
     <div
       key={char.uid}

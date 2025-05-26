@@ -2,13 +2,10 @@ import React from 'react';
 import starWarsActors from '/assets/actors.jpg';
 import { Link, useNavigate } from 'react-router-dom';
 import Character from '../CharacterCard/Character';
+import { useGetCharactersQuery } from '../../features/starWarsApi';
 const CharacterSection = () => {
-  const characters = [
-    { id: '1', name: 'Luke Skywalker', image: '/assets/luke.jpg' },
-    { id: '2', name: 'Leia Organa', image: '/assets/leia.jpg' },
-    { id: '3', name: 'Darth Vader', image: '/assets/vader.jpg' },
-    { id: '4', name: 'Yoda', image: '/assets/yoda.jpg' },
-  ];
+  const { data, error, isLoading } = useGetCharactersQuery(1);
+  console.log('🚀 ~ CharacterSection ~ data:', data);
   const navigate = useNavigate();
   return (
     <div
@@ -22,7 +19,7 @@ const CharacterSection = () => {
           Meet the Legends
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl w-full">
-          {characters.slice(0, 8).map((char) => (
+          {data?.results?.slice(5, 9).map((char) => (
             <Character key={char.id} char={char} />
           ))}
         </div>

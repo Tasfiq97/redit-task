@@ -12,11 +12,10 @@ const CharactersPage = () => {
 
   const handleSearch = () => {
     setSearch(searchInput);
-    console.log(search);
-    // setSearch(e.target.value);
   };
 
   const { data, error, isLoading } = useGetCharactersQuery({ currentPage, search });
+  console.log('🚀 ~ CharactersPage ~ data:', data);
 
   if (isLoading) return <Loading />;
   if (error) return <p className="text-red-500">Error fetching characters.</p>;

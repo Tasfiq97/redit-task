@@ -1,13 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
+const url = import.meta.env.VITE_SERVER_URL;
 export const starWarsApi = createApi({
   reducerPath: 'starWarsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://www.swapi.tech/api/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${url}` }),
   endpoints: (builder) => ({
-    // getCharacters: builder.query({
-    //   query: ({ currentPage, search }) => `people/?page=${currentPage}&limit=10&name=${search || ''}`,
-
-    // }),
     getCharacters: builder.query({
       query: ({ currentPage, search }) => {
         if (search) {
@@ -16,18 +12,12 @@ export const starWarsApi = createApi({
         return `people/?page=${currentPage}&limit=10`;
       },
       transformResponse: (response) => {
-        if (Array.isArray(response.result)) {
-          return {
-            results: response.result.map((item) => ({
-              uid: item.uid,
-              name: item.properties.name,
-              url: item.properties.url,
-            })),
-            total_pages: 1,
-          };
-        }
-
         return response;
+      },
+      transformErrorResponse: (response) => {
+        if (response.status === 404) {
+          return { error: 'No characters found' };
+        }
       },
     }),
 

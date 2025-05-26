@@ -30,7 +30,9 @@ const Character = ({ char }) => {
 
   // loading
   if (isLoading) return <CardLoading />;
-  if (error) return <p className="text-red-500">Error fetching characters.</p>;
+  if (error?.error === 'No characters found') {
+    return <p>No characters found for your search.</p>;
+  }
 
   return (
     <div

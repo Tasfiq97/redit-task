@@ -1,35 +1,13 @@
 import React from 'react';
-import {
-  useGetAllFilmsQuery,
-  useGetCharacterByIdQuery,
-  useGetPlanetsByIdQuery,
-  useGetSpeciesByIdQuery,
-} from '../../features/starWarsApi';
 import CardLoading from '../CardLoading';
-import { getIdFromUrl } from '../../utils/utils';
+import { useCharacterDetails } from '../../hooks/useCharacter';
 
 const Character = ({ char }) => {
-  const { data, error, isLoading } = useGetCharacterByIdQuery(char.uid);
-  const { result } = data || {};
-
-  //homeworld
-  const homeworldId = getIdFromUrl(result?.properties?.homeworld);
-  const { data: homeworldData, isLoading: homeworldLoading } = useGetPlanetsByIdQuery(homeworldId);
-  const { result: homeWorldResult } = homeworldData || {};
-
-  //species
-  const { data: speciesData, isLoading: speciesLoading } = useGetSpeciesByIdQuery(char.uid);
-  const { result: speciesDataResult } = speciesData || {};
-
-  //films
-  const { data: filmsData } = useGetAllFilmsQuery();
-
-  const filmsWithCharacter = filmsData?.result?.filter((film) =>
-    film?.properties?.characters?.includes(result?.properties?.url)
-  );
+  const { character, homeworld, species, films, characterLoading, homeworldLoading, speciesLoading, error } =
+    useCharacterDetails(char.uid);
 
   // loading
-  if (isLoading) return <CardLoading />;
+  if (characterLoading) return <CardLoading />;
   if (error?.error === 'No characters found') {
     return <p>No characters found for your search.</p>;
   }
@@ -40,14 +18,14 @@ const Character = ({ char }) => {
       className="bg-white/10 border border-white/20 rounded-xl p-6 text-center text-white hover:scale-105 transition-transform duration-300 shadow-lg backdrop-blur-md min-h-[400px] flex flex-col justify-between"
     >
       {/* Character Name Title */}
-      <h2 className="text-xl font-semibold text-yellow-300 mb-4">{result?.properties.name}</h2>
+      <h2 className="text-xl font-semibold text-yellow-300 mb-4">{character?.properties.name}</h2>
 
       <div className="space-y-2 text-sm text-gray-300">
         <p>
-          <span className="text-yellow-400">Height:</span> {result?.properties.height} cm
+          <span className="text-yellow-400">Height:</span> {character?.properties.height} cm
         </p>
         <p>
-          <span className="text-yellow-400">Gender:</span> {result?.properties.gender}
+          <span className="text-yellow-400">Gender:</span> {character?.properties.gender}
         </p>
         {homeworldLoading ? (
           <>
@@ -56,7 +34,7 @@ const Character = ({ char }) => {
           </>
         ) : (
           <p>
-            <span className="text-yellow-400">Homeworld:</span> {homeWorldResult?.properties?.name}
+            <span className="text-yellow-400">Homeworld:</span> {homeworld?.properties?.name}
           </p>
         )}
         {homeworldLoading ? (
@@ -66,8 +44,7 @@ const Character = ({ char }) => {
           </>
         ) : (
           <p>
-            <span className="text-yellow-400">Species:</span>{' '}
-            {speciesDataResult?.properties.classification || 'unknown'}
+            <span className="text-yellow-400">Species:</span> {species?.properties.classification || 'unknown'}
           </p>
         )}
         {speciesLoading ? (
@@ -77,16 +54,16 @@ const Character = ({ char }) => {
           </>
         ) : (
           <p>
-            <span className="text-yellow-400">Race:</span> {speciesDataResult?.properties.name || 'unknown'}
+            <span className="text-yellow-400">Race:</span> {species?.properties.name || 'unknown'}
           </p>
         )}
       </div>
 
-      {filmsWithCharacter?.length > 0 && (
+      {films?.length > 0 && (
         <div className="mt-4">
           <p className="text-yellow-400 font-medium">Appeared In:</p>
           <ul className="list-disc list-inside text-sm text-gray-200 mt-1 space-y-1">
-            {filmsWithCharacter.map((film) => (
+            {films.map((film) => (
               <li key={film.uid}>{film.properties.title}</li>
             ))}
           </ul>

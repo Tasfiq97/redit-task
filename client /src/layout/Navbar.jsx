@@ -1,19 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 w-full  bg-opacity-80 text-white px-20 py-5 z-50 ">
+    <nav className="fixed top-0 left-0 w-full  bg-opacity-80 text-white px-20 py-5 z-2 bg-black opacity-[1]">
       <ul className="flex space-x-6 text-lg">
         <li>
-          <Link to="/" className="hover:text-yellow-400 transition">
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? 'text-yellow-400 transition' : 'hover:text-yellow-400 transition')}
+          >
             Home
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/characters" className="hover:text-yellow-400 transition">
+          <NavLink
+            to="/characters"
+            className={({ isActive }) => (isActive ? 'text-yellow-400 transition' : 'hover:text-yellow-400 transition')}
+          >
             Characters
-          </Link>
+          </NavLink>
         </li>
       </ul>
     </nav>
